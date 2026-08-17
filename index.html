@@ -974,12 +974,20 @@ const PANELS = {
    ===================================================== */
 function ContentPanel({ activeTab }) {
   // 'idle' = folha atual parada na frente · 'exiting' = sendo guardada antes de puxar a próxima
-  const [renderedTab, setRenderedTab] = useState(activeTab);
+  const [renderedTab, setRenderedTab] = useState(activeTab); // começa null — só a capa aparece
   const [phase, setPhase] = useState("idle");
   const timeoutRef = useRef(null);
 
   useEffect(() => {
     if (activeTab === renderedTab) return;
+
+    if (renderedTab === null) {
+      // nenhuma folha na frente ainda: a primeira aba clicada só entra, sem sair de lugar nenhum
+      setRenderedTab(activeTab);
+      setPhase("idle");
+      return;
+    }
+
     setPhase("exiting");
     timeoutRef.current = setTimeout(() => {
       setRenderedTab(activeTab);
@@ -988,6 +996,8 @@ function ContentPanel({ activeTab }) {
     return () => clearTimeout(timeoutRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
+
+  if (!renderedTab) return null; // nada sobreposto — só a capa fica visível
 
   const Panel = PANELS[renderedTab];
 
@@ -1002,7 +1012,8 @@ function ContentPanel({ activeTab }) {
    APP — estado da aba ativa fica aqui (useState)
    ===================================================== */
 function App() {
-  const [activeTab, setActiveTab] = useState("sobre");
+  // null = nenhuma aba clicada ainda, só a capa aparece
+  const [activeTab, setActiveTab] = useState(null);
 
   return (
     <div id="page">
