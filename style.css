@@ -1,0 +1,593 @@
+/* ============================= */
+/* RESET & BASE                   */
+/* ============================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root{
+  --peach: #f5cfa0;
+  --peach-dark: #e9bb84;
+  --ink: #4a3728;
+  --ink-soft: #6b5842;
+  --post-green: #bfe8b8;
+  --post-blue: #b8d9f0;
+  --post-pink: #f5b8c4;
+  --post-yellow: #f7e28a;
+  --stamp-red: #b23a3a;
+  --card-cream: #fffaf0;
+  --paper-grid: rgba(120, 90, 50, 0.08);
+}
+
+body{
+  min-height: 100vh;
+  font-family: 'Nunito', sans-serif;
+  color: var(--ink);
+  /* Fundo cinza-chumbo com textura de grid (mesa de trabalho) */
+  background-color: #2b2d31;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  padding: 36px 16px 60px;
+}
+
+::selection{ background: var(--post-yellow); color: var(--ink); }
+
+#page{
+  width: 100%;
+  max-width: 980px;
+}
+
+/* ===== NAV: abas estilo divisória de pasta sanfonada ===== */
+.tabs{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0;
+  padding: 0 6px;
+  margin-bottom: -24px;
+  position: relative;
+  z-index: 1;
+}
+
+.tab{
+  font-family: 'Kalam', cursive;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  padding: 16px 22px 12px;
+  color: var(--ink);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.28);
+  clip-path: polygon(14% 0%, 86% 0%, 100% 100%, 0% 100%);
+  margin-left: -10px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.tab:first-child{ margin-left: 0; }
+
+.tab:nth-child(1){ background: var(--post-green); transform: translateY(12px) rotate(-2deg); z-index: 1; }
+.tab:nth-child(2){ background: var(--post-blue); transform: translateY(-4px) rotate(1.5deg); z-index: 2; }
+.tab:nth-child(3){ background: var(--post-pink); transform: translateY(14px) rotate(-1deg); z-index: 1; }
+.tab:nth-child(4){ background: var(--post-yellow); transform: translateY(0px) rotate(2deg); z-index: 2; }
+
+.tab:hover, .tab:focus-visible{
+  transform: translateY(-10px) rotate(0deg) scale(1.06) !important;
+  box-shadow: 0 12px 18px rgba(0,0,0,0.32);
+  z-index: 5 !important;
+}
+.tab.active{
+  transform: translateY(-10px) rotate(0deg) scale(1.06) !important;
+  outline: 2px dashed var(--ink-soft);
+  outline-offset: 2px;
+  z-index: 5 !important;
+}
+
+/* ============================= */
+/* STAGE: capa e folha da aba ocupam a mesma célula, uma por cima da outra */
+/* ============================= */
+.stage{
+  display: grid;
+  margin-bottom: 26px;
+}
+.stage > .hero-panel,
+.stage > #content-panel{
+  grid-row: 1;
+  grid-column: 1;
+}
+
+/* ============================= */
+/* PAINEL "CAPA": fica atrás, coberto pela folha da aba ativa */
+/* ============================= */
+.hero-panel{
+  position: relative;
+  background: var(--peach);
+  border-radius: 6px 20px 20px 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  padding: 34px 30px 40px;
+  z-index: 2;
+  /* nada aqui é clicável: nunca deve roubar o toque das abas encaixadas por cima */
+  pointer-events: none;
+}
+.hero-panel::before{
+  /* camada de trás simulando outra folha por baixo */
+  content: "";
+  position: absolute;
+  inset: 12px -10px -14px 8px;
+  background: var(--peach-dark);
+  border-radius: 20px;
+  transform: rotate(0.7deg);
+  z-index: -1;
+}
+
+.title-tape{
+  position: relative;
+  display: inline-block;
+  background: var(--post-yellow);
+  padding: 14px 30px;
+  font-family: 'Caveat', cursive;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--ink);
+  transform: rotate(-3deg);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.22);
+  border-radius: 2px;
+  margin-bottom: 26px;
+}
+.title-tape::before, .title-tape::after{
+  content: "";
+  position: absolute;
+  width: 70px;
+  height: 24px;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.7);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+.title-tape::before{ top: -14px; left: -18px; transform: rotate(-40deg); }
+.title-tape::after{ top: -14px; right: -18px; transform: rotate(40deg); }
+
+.hero{
+  display: flex;
+  flex-wrap: wrap-reverse;
+  gap: 28px;
+  align-items: center;
+  justify-content: space-between;
+}
+.hero-text{ flex: 1; min-width: 220px; }
+.hero-role{
+  font-family: 'Kalam', cursive;
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+}
+
+/* ===== FOTO POLAROID ===== */
+.polaroid-wrap{
+  position: relative;
+  width: 260px;
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+.polaroid{
+  background: #fff;
+  padding: 14px 14px 20px;
+  box-shadow: 0 14px 24px rgba(0,0,0,0.35);
+  transform: rotate(3deg);
+  position: relative;
+  z-index: 1;
+}
+.polaroid img{
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: 50% 32%;
+  filter: saturate(1.08) contrast(1.03);
+}
+.tape{
+  position: absolute;
+  width: 54px;
+  height: 20px;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 2;
+}
+.tape.tl{ top: -10px; left: -14px; transform: rotate(-45deg); }
+.tape.tr{ top: -10px; right: -14px; transform: rotate(45deg); }
+
+.stamp{
+  position: absolute;
+  left: -18px;
+  bottom: -22px;
+  width: 118px;
+  height: 118px;
+  border: 3px solid var(--stamp-red);
+  border-radius: 50%;
+  color: var(--stamp-red);
+  opacity: 0.88;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: rotate(-14deg);
+  font-family: 'Kalam', cursive;
+  font-weight: 700;
+  font-size: 0.62rem;
+  line-height: 1.35;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 10px;
+  mix-blend-mode: multiply;
+  z-index: 3;
+  background: rgba(255,255,255,0.35);
+}
+.stamp::before{
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--stamp-red);
+  border-radius: 50%;
+}
+.stamp b{ font-size: 0.88rem; display: block; }
+
+/* ============================= */
+/* PAINEL DE CONTEÚDO (troca via React state) */
+/* ============================= */
+#content-panel{
+  position: relative;
+  z-index: 10;
+  align-self: start;
+  /* a moldura em si não captura clique, só o padding do topo (vazio)
+     fica sobre as abas encaixadas; os filhos reabilitam o clique abaixo */
+  pointer-events: none;
+}
+#content-panel > .paper > *{
+  pointer-events: auto;
+}
+
+/* Cada aba é uma "folha" avulsa, com fundo de papel quadriculado */
+.paper{
+  background:
+    linear-gradient(var(--paper-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-grid) 1px, transparent 1px),
+    var(--card-cream);
+  background-size: 22px 22px, 22px 22px, auto;
+  border-radius: 14px;
+  box-shadow: 0 18px 34px rgba(0,0,0,0.35);
+  padding: 30px 26px 34px;
+  animation: paperIn 0.6s cubic-bezier(.22,.61,.36,1) both;
+}
+.paper.rot-sobre{ transform: rotate(-0.6deg); --rot: -0.6deg; }
+.paper.rot-habilidades{ transform: rotate(0.5deg); --rot: 0.5deg; }
+.paper.rot-projetos{ transform: rotate(-0.4deg); --rot: -0.4deg; }
+.paper.rot-contato{ transform: rotate(0.7deg); --rot: 0.7deg; }
+
+/* A folha nova sobe de baixo do monte e se acomoda na frente, devagar */
+@keyframes paperIn{
+  0%{ opacity: 0; transform: translateY(80px) rotate(var(--rot)) scale(0.85); }
+  100%{ opacity: 1; transform: translateY(0) rotate(var(--rot)) scale(1); }
+}
+/* A folha atual desce e encolhe, sumindo de volta no monte */
+@keyframes paperOut{
+  from{ opacity: 1; transform: translateY(0) rotate(var(--rot)) scale(1); }
+  to{ opacity: 0; transform: translateY(80px) rotate(var(--rot)) scale(0.85); }
+}
+#content-panel.exiting .paper{
+  animation: paperOut 0.5s ease-in forwards !important;
+}
+
+.section-title{
+  font-family: 'Kalam', cursive;
+  font-size: 1.9rem;
+  color: var(--ink);
+  margin-bottom: 22px;
+}
+
+/* ============================= */
+/* SOBRE: "Quem sou eu?"           */
+/* ============================= */
+.about-card{
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(120,90,50,0.12);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  padding: 26px;
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.about-avatar{
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 25%;
+  flex-shrink: 0;
+  border: 3px solid var(--peach);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.about-text{ flex: 1; min-width: 220px; }
+.about-name{
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.5rem;
+  color: var(--ink);
+}
+.about-role{
+  font-family: 'Kalam', cursive;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+.about-subtitle{
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin-bottom: 8px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(120,90,50,0.25);
+}
+.about-text > .about-subtitle:first-child{ border-top: none; padding-top: 0; }
+.about-bio{
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+.about-bio strong{ color: var(--ink); }
+
+/* ============================= */
+/* HABILIDADES                    */
+/* ============================= */
+.skills-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+.skill-card{
+  background: #fff;
+  border: 1px solid rgba(120,90,50,0.1);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.skill-card:hover{ transform: translateY(-4px) rotate(-0.3deg); box-shadow: 0 10px 18px rgba(0,0,0,0.18); }
+
+.skill-icon{
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 14px;
+}
+.skill-card.c-blue .skill-icon{ background: #5b9fe0; }
+.skill-card.c-green .skill-icon{ background: #3fae76; }
+.skill-card.c-pink .skill-icon{ background: #e0578f; }
+.skill-card.c-orange .skill-icon{ background: #e08a3d; }
+
+.skill-card h3{
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.3rem;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+.skill-note{
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.pills{ display: flex; flex-wrap: wrap; gap: 8px; }
+.pill{
+  background: #eee2cf;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(120,90,50,0.15);
+}
+
+/* ============================= */
+/* PROJETOS                       */
+/* ============================= */
+.subsection-title{
+  font-family: 'Kalam', cursive;
+  font-size: 1.3rem;
+  color: var(--ink-soft);
+  margin: 26px 0 14px;
+}
+.subsection-title:first-of-type{ margin-top: 0; }
+
+.featured-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+.featured-card{
+  background: #fff;
+  border: 1px solid rgba(120,90,50,0.1);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.featured-card:hover{ transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.2); }
+.featured-thumb{
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #ddd;
+  display: block;
+}
+.featured-body{ padding: 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.featured-body h4{ font-family: 'Patrick Hand', cursive; font-size: 1.25rem; color: var(--ink); }
+.featured-body p{ font-size: 0.92rem; color: var(--ink-soft); line-height: 1.5; flex: 1; }
+
+.btn-github{
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Kalam', cursive;
+  font-weight: 700;
+  background: var(--ink);
+  color: var(--card-cream);
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.92rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.btn-github:hover{ background: var(--stamp-red); transform: translateY(-2px); }
+
+.repos-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+.repo-card{
+  background: #fff;
+  border: 1px solid rgba(120,90,50,0.1);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.2s ease;
+}
+.repo-card:hover{ transform: translateY(-3px); }
+.repo-name{ font-family: 'Patrick Hand', cursive; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+.repo-name i{ color: var(--ink-soft); }
+.repo-desc{ font-size: 0.86rem; color: var(--ink-soft); line-height: 1.45; min-height: 2.6em; }
+.repo-meta{ display: flex; align-items: center; gap: 14px; font-size: 0.8rem; color: var(--ink-soft); }
+.repo-meta span{ display: flex; align-items: center; gap: 4px; }
+.repo-link{
+  margin-top: auto;
+  align-self: flex-start;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--stamp-red);
+  text-decoration: none;
+  font-family: 'Kalam', cursive;
+}
+.repo-link:hover{ text-decoration: underline; }
+
+.skeleton-card{
+  background: #fff;
+  border: 1px solid rgba(120,90,50,0.1);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.skeleton-line{
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #e9dfc9 25%, #f3ead9 37%, #e9dfc9 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+.skeleton-line.w60{ width: 60%; height: 16px; }
+.skeleton-line.w90{ width: 90%; }
+.skeleton-line.w40{ width: 40%; }
+@keyframes shimmer{
+  0%{ background-position: 100% 0; }
+  100%{ background-position: -100% 0; }
+}
+
+.projects-status{
+  font-family: 'Kalam', cursive;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  background: #fdf1de;
+  border: 1px dashed var(--ink-soft);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+.projects-status.error{ color: var(--stamp-red); border-color: var(--stamp-red); }
+
+/* ============================= */
+/* CONTATO                        */
+/* ============================= */
+.contact-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px;
+}
+.contact-card{
+  background: #fff;
+  border: 1px solid rgba(120,90,50,0.1);
+  border-radius: 14px;
+  padding: 22px;
+  text-align: center;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.contact-card:hover{ transform: translateY(-5px) rotate(-1deg); box-shadow: 0 12px 20px rgba(0,0,0,0.2); }
+.contact-card i{ font-size: 2rem; color: var(--stamp-red); }
+.contact-card h4{ font-family: 'Patrick Hand', cursive; font-size: 1.2rem; }
+.contact-card span{ font-size: 0.85rem; color: var(--ink-soft); word-break: break-word; }
+
+/* ============================= */
+/* RODAPÉ                         */
+/* ============================= */
+footer{
+  position: relative;
+  z-index: 2;
+  margin-top: 24px;
+  text-align: center;
+  font-family: 'Kalam', cursive;
+  font-size: 0.9rem;
+  color: #d8cdb8;
+}
+footer a{ color: #fff; font-weight: 700; text-decoration: none; }
+footer a:hover{ text-decoration: underline; }
+
+/* ============================= */
+/* RESPONSIVO                     */
+/* ============================= */
+/* Telas de toque (celular/tablet): abas sem o recorte trapezoidal.
+   A forma angulada reduz demais a área realmente tocável, então aqui
+   viram um retângulo cheio (mais fácil de acertar com o dedo). */
+@media (max-width: 900px){
+  .tabs{ margin-bottom: -8px; }
+  .tab{
+    clip-path: none;
+    border-radius: 8px 8px 3px 3px;
+    margin-left: -4px;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 640px){
+  body{ padding: 20px 10px 40px; }
+  .hero-panel{ padding: 24px 18px 30px; border-radius: 14px; }
+  .paper{ padding: 22px 16px 26px; border-radius: 12px; }
+  .title-tape{ font-size: 2rem; padding: 10px 20px; margin-bottom: 46px; }
+  .hero-role{ font-size: 1.02rem; }
+  .polaroid-wrap{ width: 200px; }
+  .stamp{ width: 112px; height: 112px; font-size: 0.56rem; left: -10px; bottom: -26px; padding: 8px; }
+  .stamp b{ font-size: 0.82rem; }
+  .tab{ padding: 12px 16px 10px; font-size: 0.92rem; }
+  .about-card{ padding: 20px; }
+}
