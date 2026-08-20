@@ -18,6 +18,13 @@ const TABS = [
 // (opengraph), então não depende de nenhum arquivo externo.
 const FEATURED_PROJECTS = [
   {
+    name: "Fox Guardian",
+    repo: "projeto-foxguardian",
+    description: "Landing page institucional para a Fox Guardian, empresa de segurança eletrônica em Bauru/SP, com foco em conversão via WhatsApp. Design system autoral, catálogo de produtos filtrável, radar de área de atendimento e pipeline próprio de otimização de imagens.",
+    tech: ["HTML5", "CSS3", "JavaScript", "Playwright"],
+    url: "https://github.com/lucascardosoinocencio/projeto-foxguardian",
+  },
+  {
     name: "Stock Segurança",
     repo: "stock-seguranca-site",
     description: "Landing page para a Stock Segurança: CFTV, alarme, controle de acesso e automação em Americana/SP e região. Página comercial com seções de serviços, chamadas para contato e visual orientado a conversão.",
@@ -49,6 +56,7 @@ const FEATURED_PROJECTS = [
 
 // Fallback estático usado somente se a API do GitHub falhar (limite de requisições, offline, etc.)
 const FALLBACK_REPOS = [
+  { name: "projeto-foxguardian", description: "Landing page institucional da Fox Guardian, empresa de segurança eletrônica em Bauru/SP, com foco em conversão via WhatsApp.", language: "HTML", stargazers_count: 0, html_url: "https://github.com/lucascardosoinocencio/projeto-foxguardian" },
   { name: "stock-seguranca-site", description: "Landing page da Stock Segurança: CFTV, alarme, controle de acesso e automação em Americana/SP e região.", language: "HTML", stargazers_count: 0, html_url: "https://github.com/lucascardosoinocencio/stock-seguranca-site" },
   { name: "calculadora-comissao-route66", description: "Calculadora de comissões moderna para os vendedores da Distribuidora Route 66, com formatação de moeda em tempo real.", language: "JavaScript", stargazers_count: 0, html_url: "https://github.com/lucascardosoinocencio/calculadora-comissao-route66" },
   { name: "login-validator-js", description: "Login Validator (HTML, CSS, JavaScript): validação de formulário com feedback em tempo real.", language: "JavaScript", stargazers_count: 0, html_url: "https://github.com/lucascardosoinocencio/login-validator-js" },
@@ -122,6 +130,16 @@ function SobrePanel() {
             Hoje sigo me aprofundando no ecossistema <strong>Fullstack JavaScript</strong> (Node.js, TypeScript,
             React e Next.js), sempre com a mão na massa em projetos novos e cuidando de cada detalhe
             visual para entregar telas que funcionam bem no desktop e no celular.
+          </p>
+
+          <p className="about-subtitle">Formação Acadêmica</p>
+          <p className="about-bio">
+            Curso <strong>Engenharia de Software</strong> na{" "}
+            <a href="https://www.unopar.com.br/" target="_blank" rel="noopener noreferrer">Unopar</a>,
+            aprofundando a base teórica por trás do que já venho praticando no dia a dia como
+            desenvolvedor. Complemento a formação com cursos práticos: HTML5, CSS3, JavaScript e
+            Lógica de Programação pelo Curso em Vídeo, e Fullstack JavaScript (Node.js, TypeScript,
+            React, Next.js, Docker, Git e API REST) pela Udemy.
           </p>
 
           <p className="about-subtitle">Experiência Profissional</p>
