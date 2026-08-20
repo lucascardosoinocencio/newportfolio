@@ -20,6 +20,7 @@ const FEATURED_PROJECTS = [
   {
     name: "Fox Guardian",
     repo: "projeto-foxguardian",
+    thumb: "assets/fox-guardian-preview.jpg",
     description: "Landing page institucional para a Fox Guardian, empresa de segurança eletrônica em Bauru/SP, com foco em conversão via WhatsApp. Design system autoral, catálogo de produtos filtrável, radar de área de atendimento e pipeline próprio de otimização de imagens.",
     tech: ["HTML5", "CSS3", "JavaScript", "Playwright"],
     url: "https://github.com/lucascardosoinocencio/projeto-foxguardian",
@@ -27,13 +28,23 @@ const FEATURED_PROJECTS = [
   {
     name: "Stock Segurança",
     repo: "stock-seguranca-site",
+    thumb: "assets/stock-seguranca-preview.jpg",
     description: "Landing page para a Stock Segurança: CFTV, alarme, controle de acesso e automação em Americana/SP e região. Página comercial com seções de serviços, chamadas para contato e visual orientado a conversão.",
     tech: ["HTML5", "CSS3", "JavaScript", "Responsivo"],
     url: "https://github.com/lucascardosoinocencio/stock-seguranca-site",
   },
   {
+    name: "Ana Julia Pires, Massoterapia",
+    repo: "projeto-site-ana",
+    thumb: "assets/ana-preview.jpg",
+    description: "Landing page institucional para a massoterapeuta Ana Julia Pires, com foco em conversão via WhatsApp. Seções de técnicas, atendimento, resultados e depoimentos, com pipeline próprio de otimização de imagens responsivas.",
+    tech: ["HTML5", "CSS3", "JavaScript", "sharp"],
+    url: "https://github.com/lucascardosoinocencio/projeto-site-ana",
+  },
+  {
     name: "Calculadora de Comissão",
     repo: "calculadora-comissao-route66",
+    thumb: "assets/calculadora-comissao-preview.jpg",
     description: "Calculadora de comissões desenvolvida para os vendedores da Distribuidora Route 66, com formatação de moeda em tempo real e cálculo instantâneo conforme os valores digitados.",
     tech: ["JavaScript", "HTML5", "CSS3"],
     url: "https://github.com/lucascardosoinocencio/calculadora-comissao-route66",
@@ -41,6 +52,7 @@ const FEATURED_PROJECTS = [
   {
     name: "Login Validator",
     repo: "login-validator-js",
+    thumb: "assets/login-validator-preview.jpg",
     description: "Validador de formulário de login com feedback em tempo real: checagem de campos, mensagens de erro dinâmicas e experiência de preenchimento mais clara para o usuário.",
     tech: ["JavaScript", "HTML5", "CSS3"],
     url: "https://github.com/lucascardosoinocencio/login-validator-js",
@@ -48,6 +60,7 @@ const FEATURED_PROJECTS = [
   {
     name: "Busca de CEP",
     repo: "projeto-viacep",
+    thumb: "assets/busca-cep-preview.jpg",
     description: "Projeto de consulta de endereço completo a partir do CEP, consumindo a API pública ViaCEP via Fetch e exibindo os dados formatados na tela.",
     tech: ["JavaScript", "Fetch API", "ViaCEP"],
     url: "https://github.com/lucascardosoinocencio/projeto-viacep",
@@ -219,8 +232,8 @@ function FeaturedCard({ project }) {
       {!imgFailed && (
         <img
           className="featured-thumb"
-          src={`https://opengraph.githubassets.com/1/${GITHUB_USER}/${project.repo}`}
-          alt={`Prévia do repositório ${project.name}`}
+          src={project.thumb || `https://opengraph.githubassets.com/1/${GITHUB_USER}/${project.repo}`}
+          alt={`Prévia do projeto ${project.name}`}
           loading="lazy"
           onError={() => setImgFailed(true)}
         />
